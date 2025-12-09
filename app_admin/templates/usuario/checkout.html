@@ -1,0 +1,109 @@
+{% extends 'usuario/base_public.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Finalizar Compra</h2>
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">Datos de Envío y Pago</div>
+                <div class="card-body">
+                    <form method="post" id="checkout-form">
+                        {% csrf_token %}
+                        <h5 class="text-primary mb-3">Información Personal</h5>
+                        <div class="mb-3">{{ form.nombre_cliente.label_tag }} {{ form.nombre_cliente }}</div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">{{ form.email_cliente.label_tag }} {{ form.email_cliente }}</div>
+                            <div class="col-md-6 mb-3">{{ form.telefono_cliente.label_tag }} {{ form.telefono_cliente }}</div>
+                        </div>
+                        <div class="mb-3">{{ form.domicilio.label_tag }} {{ form.domicilio }}</div>
+
+                        <h5 class="text-primary mt-4 mb-3">Método de Pago</h5>
+                        <div class="mb-3">
+                            <!-- Renderizado manual para JS -->
+                            {% for radio in form.forma_pago %}
+                                <div class="form-check">
+                                    {{ radio.tag }}
+                                    <label class="form-check-label" for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Sección Dinámica: Tarjeta -->
+                        <div id="card-section" style="display:none;" class="bg-light p-3 rounded mb-3 border">
+                            <h6>Datos de Tarjeta</h6>
+                            <div class="mb-2">{{ form.numero_tarjeta }}</div>
+                            <div class="row">
+                                <div class="col-6">{{ form.caducidad }}</div>
+                                <div class="col-6">{{ form.cvv }}</div>
+                            </div>
+                        </div>
+
+                        <!-- Sección Dinámica: PayPal -->
+                        <div id="paypal-section" style="display:none;" class="alert alert-info text-center">
+                            <i class="bi bi-paypal"></i> Serás redirigido a PayPal para completar el pago de manera segura.
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100 mt-3">Pagar ${{ cart.get_total_with_tax|floatformat:2 }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Resumen Lateral -->
+        <div class="col-md-5">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h4>Resumen del Pedido</h4>
+                    <hr>
+                    {% for item in cart %}
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>{{ item.producto.marca }} {{ item.producto.modelo }} (x{{ item.cantidad }})</span>
+                        <span>${{ item.total_precio }}</span>
+                    </div>
+                    {% endfor %}
+                    <hr>
+                    <div class="d-flex justify-content-between text-success fw-bold">
+                        <span>Total con Impuestos:</span>
+                        <span>${{ cart.get_total_with_tax|floatformat:2 }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const radios = document.querySelectorAll('input[name="forma_pago"]');
+        const cardSection = document.getElementById('card-section');
+        const paypalSection = document.getElementById('paypal-section');
+
+        function togglePayment() {
+            let selected;
+            radios.forEach(r => { if(r.checked) selected = r.value; });
+
+            if(selected === 'tarjeta') {
+                cardSection.style.display = 'block';
+                paypalSection.style.display = 'none';
+                document.getElementById('id_numero_tarjeta').required = true;
+            } else if (selected === 'paypal') {
+                cardSection.style.display = 'none';
+                paypalSection.style.display = 'block';
+                document.getElementById('id_numero_tarjeta').required = false;
+            }
+        }
+
+        radios.forEach(r => r.addEventListener('change', togglePayment));
+        togglePayment(); // Run on load
+        
+        // Añadir clases bootstrap a los inputs generados por Django
+        document.querySelectorAll('input, textarea, select').forEach(el => {
+            if(!el.classList.contains('form-check-input')) {
+                el.classList.add('form-control');
+            }
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}

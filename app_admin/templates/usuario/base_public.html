@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bocineytion Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        .navbar-brand { font-family: 'Times New Roman', serif; letter-spacing: 1px; }
+        .footer { background: #111; color: #aaa; padding: 40px 0; margin-top: 50px;}
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" style="font-family: calibri;" href="{% url 'tienda-home' %}">Bocineytion</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navPublic">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navPublic">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'cat-altavoces' %}">Altavoces</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'cat-amplificadores' %}">Amplificadores</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'cat-cine' %}">Cine en Casa</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'cat-portatiles' %}">Portátiles</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="{% url 'carrito-detail' %}" class="btn btn-outline-light position-relative">
+                        <i class="bi bi-cart"></i> Carrito
+                    </a>
+                    {% if user.is_authenticated %}
+                        <span class="text-white">Hola, {{ user.username }}</span>
+                        {% if user.is_superuser %}
+                            <a href="{% url 'producto-list' %}" class="btn btn-sm btn-warning">Admin</a>
+                        {% endif %}
+                        <a href="{% url 'logout' %}" class="btn btn-sm btn-danger">Salir</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-sm btn-outline-warning">Login</a>
+                        <a href="{% url 'registro' %}" class="btn btn-sm btn-warning">Registro</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="min-vh-100">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer text-center" style="display: flex; justify-content: center; align-items: center; gap: 15px;">
+        <p>Jesus Alfonso Campoya Barrietos - Construye Aplicaciones Web</p>
+        <img src="https://m.media-amazon.com/images/S/stores-image-uploads-na-prod/2/AmazonStores/A1AM78C64UM0Y8/5194f5008351c98bd1278a375448f688.w1110.h1110._RO554,1,0,0,0,0,0,0,0,0,15_FMpng_.jpg" style="width: 60px;">
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

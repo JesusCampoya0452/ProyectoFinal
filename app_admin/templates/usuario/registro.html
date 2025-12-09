@@ -1,0 +1,43 @@
+{% extends 'usuario/base_public.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card shadow">
+                <div class="card-header bg-warning text-dark">
+                    <h3 class="card-title mb-0 text-center">Crear Cuenta</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <!-- Renderizado con clases de Bootstrap -->
+                        {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="text-danger small">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-dark btn-lg">Registrarse</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center bg-white border-0">
+                    <p class="mb-0">¿Ya tienes cuenta? <a href="{% url 'login' %}" class="text-decoration-none fw-bold">Inicia Sesión aquí</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script simple para añadir clases a los inputs generados por Django -->
+<script>
+    document.querySelectorAll('input').forEach(el => el.classList.add('form-control'));
+</script>
+{% endblock %}

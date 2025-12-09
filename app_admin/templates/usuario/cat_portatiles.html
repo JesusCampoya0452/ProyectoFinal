@@ -1,0 +1,43 @@
+{% extends 'usuario/base_public.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- CAMBIA ESTE TÍTULO SEGÚN EL ARCHIVO (Ej: Altavoces, Amplificadores, etc.) -->
+    <h2 class="text-center mb-4">Portatiles</h2>
+
+    <div class="row">
+        {% for producto in productos %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+                <!-- Imagen -->
+                {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.modelo }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                    <div class="bg-secondary text-white d-flex justify-content-center align-items-center" style="height: 200px;">
+                        Sin Imagen
+                    </div>
+                {% endif %}
+
+                <!-- Cuerpo de la carta -->
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary">{{ producto.marca }}</h5>
+                    <p class="card-text fw-bold">{{ producto.modelo }}</p>
+                    <p class="text-success fs-5">${{ producto.precio }}</p>
+                </div>
+
+                <!-- Botón -->
+                <div class="card-footer bg-white border-0 text-center pb-3">
+                    <a href="{% url 'producto-public-detail' producto.pk %}" class="btn btn-outline-dark w-100">
+                        Ver Detalles
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <p class="text-muted">No hay productos disponibles en esta categoría por el momento.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

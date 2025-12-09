@@ -1,0 +1,64 @@
+{% load static %}
+
+<style>
+    .productos{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 50px;
+    }
+
+    .producto{
+        background-color: #f3f3f3;
+        border: 2px solid rgb(38, 55, 112);
+        border-radius: 10px;
+        width: 300px;
+        margin: 20px;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .producto img{
+        width: 100%;
+        height: 250px;
+        border-radius: 10px;
+    }
+
+    .producto h4{
+        color: rgb(38, 55, 112);
+        margin-top: 10px;
+    }
+
+    .btn-comprar{
+        background-color: rgb(38, 55, 112);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn-comprar:hover{
+        background-color: grey;
+        transform: scale(1.05);
+    }
+</style>
+
+<div class="productos">
+    {% for producto in productos %}
+    <div class="producto">
+        {% if producto.imagen %}
+            <img src="{{ producto.imagen.url }}" alt="{{ producto.modelo }}">
+        {% else %}
+            <img src="{% static 'imagenes/altavoces1.jpg' %}" alt="{{ producto.modelo }}">
+        {% endif %}
+        <h4>{{ producto.marca }} {{ producto.modelo }}</h4>
+        <p>{{ producto.tipo_conectividad }} - Stock: {{ producto.stock }} - Precio: ${{ producto.precio }}</p>
+        <button class="btn-comprar" onclick="window.location.href='{% url 'producto-detail' producto.pk %}'">Comprar</button>
+    </div>
+    {% empty %}
+    <p>No hay productos disponibles.</p>
+    {% endfor %}
+</div>

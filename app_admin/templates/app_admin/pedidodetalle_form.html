@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if form.instance.pk %}Editar{% else %}Crear{% endif %} Detalle</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">
+                        <h4 class="mb-0">
+                            {% if form.instance.pk %}
+                                Editar Ítem de Pedido
+                            {% else %}
+                                Agregar Producto al Pedido
+                            {% endif %}
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            
+                            <!-- Renderizado manual de campos para mejor control visual -->
+                            <div class="mb-3">
+                                <label for="{{ form.pedido.id_for_label }}" class="form-label">Pedido Asociado</label>
+                                {{ form.pedido }}
+                                {% if form.pedido.errors %}
+                                    <div class="text-danger small">{{ form.pedido.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ form.producto.id_for_label }}" class="form-label">Producto</label>
+                                {{ form.producto }}
+                                {% if form.producto.errors %}
+                                    <div class="text-danger small">{{ form.producto.errors }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.cantidad.id_for_label }}" class="form-label">Cantidad</label>
+                                    {{ form.cantidad }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="{{ form.precio_unitario.id_for_label }}" class="form-label">Precio Unitario</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        {{ form.precio_unitario }}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Errores generales -->
+                            {% if form.non_field_errors %}
+                                <div class="alert alert-danger">{{ form.non_field_errors }}</div>
+                            {% endif %}
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                <a href="{% url 'pedidodetalle-list' %}" class="btn btn-secondary me-md-2">Cancelar</a>
+                                <button type="submit" class="btn btn-success">Guardar Detalle</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script para añadir clases de Bootstrap a los inputs de Django automáticamente -->
+    <script>
+        document.querySelectorAll('input, select').forEach(function(el) {
+            el.classList.add('form-control');
+            if(el.type === 'checkbox') {
+                el.classList.remove('form-control');
+                el.classList.add('form-check-input');
+            }
+        });
+    </script>
+</body>
+</html>

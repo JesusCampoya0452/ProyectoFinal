@@ -1,0 +1,88 @@
+{% extends 'app_admin/base.html' %}
+{% load static %}
+
+{% block title %}Bienvenidos a mi Negocio{% endblock %}
+
+{% block content %}
+<style>
+    .main{
+        display:flex;
+        margin-left: 200px;
+    }
+
+    .conteiner{
+        width: 500px;
+        height: 500px;
+        margin-top: 50px;
+        margin-left: 100px;
+        text-align: center;
+    }
+
+    h3{
+        color: #003366;
+        text-align: center;
+        font-size: 36px;
+        font-family: 'Times New Roman', serif;
+    }
+
+    header{
+        background-color: #333333;
+        color: white;
+        font-size: 30px;
+        font-family: 'Times New Roman', serif;
+        text-align: center;
+        height: 100px;
+        padding-top: 50px;
+    }
+
+    .conteiner p{
+        font-family: 'Arial', sans-serif;
+        font-size: 18px;
+        color: #333333;
+    }
+
+    nav {
+        background: #000000;
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        padding: 1rem 1.5rem;
+        display: inline-block;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin: 0 5px;
+        font-family: 'Arial', sans-serif;
+    }
+
+    nav a:hover {
+        background-color: #003366;
+        color: white;
+    }
+
+    footer {
+        background-color: #333333;
+        color: white;
+        text-align: center;
+        padding: 2rem 0;
+        margin-top: 2rem;
+    }
+</style>
+
+<div class="main">
+    <div class="conteiner">
+        <img src="https://media.istockphoto.com/id/1457315003/es/vector/orador-icono-con-reflejo-sobre-fondo-blanco.jpg?s=612x612&w=0&k=20&c=3kHPLnvrGNPTYVgAxxoqz_58Yy8FupbsMCygGzdM8bA=" alt="bocinas" style="width: 500px; height: 500px;">
+    </div>
+    <div class="conteiner">
+        <h3>BIENVENIDOS</h3>
+        <p>Somos una empresa especializada en el diseño y fabricación de bocinas de alta calidad,
+            enfocada en ofrecer soluciones de audio avanzadas para todo tipo de usuarios. Con un enfoque en la innovación y el rendimiento,
+            Bocineytion proporciona productos de sonido nítido y potente, ideales tanto para uso personal como profesional.</p>
+    </div>
+</div>
+{% endblock %}

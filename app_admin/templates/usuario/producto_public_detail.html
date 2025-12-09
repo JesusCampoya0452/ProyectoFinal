@@ -1,0 +1,33 @@
+{% extends 'usuario/base_public.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            {% if producto.imagen %}
+                <img src="{{ producto.imagen.url }}" class="img-fluid rounded shadow" alt="{{ producto.modelo }}">
+            {% else %}
+                <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 400px;">Sin Imagen</div>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <h1 class="display-5">{{ producto.marca }} {{ producto.modelo }}</h1>
+            <h4 class="text-muted">{{ producto.categoria|title }}</h4>
+            <hr>
+            <p class="lead">{{ producto.tipo_conectividad }}</p>
+            <p>Stock disponible: <strong>{{ producto.stock }}</strong></p>
+            
+            <h2 class="text-success my-4">${{ producto.precio }}</h2>
+            
+            {% if producto.stock > 0 %}
+                <a href="{% url 'add-to-cart' producto.id %}" class="btn btn-dark btn-lg w-100">
+                    <i class="bi bi-cart-plus"></i> Añadir al Carrito
+                </a>
+            {% else %}
+                <button class="btn btn-secondary btn-lg w-100" disabled>Agotado</button>
+            {% endif %}
+            
+            <a href="{% url 'tienda-home' %}" class="btn btn-link mt-3 d-block">Seguir comprando</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

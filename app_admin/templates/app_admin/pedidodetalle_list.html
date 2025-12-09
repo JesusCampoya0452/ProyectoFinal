@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Detalles de Pedido</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Items de Pedidos (Detalles)</h1>
+            <a href="{% url 'pedidodetalle-create' %}" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Agregar Producto a Pedido
+            </a>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped mb-0 align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Pedido Asociado</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unit.</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in pedidodetalles %}
+                            <tr>
+                                <td>{{ item.id }}</td>
+                                <td>
+                                    <a href="{% url 'pedido-detail' item.pedido.pk %}" class="text-decoration-none fw-bold">
+                                        Pedido #{{ item.pedido.id }}
+                                    </a>
+                                </td>
+                                <td>{{ item.producto }}</td>
+                                <td>
+                                    <span class="badge bg-secondary rounded-pill">{{ item.cantidad }}</span>
+                                </td>
+                                <td>${{ item.precio_unitario }}</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{% url 'pedidodetalle-detail' item.pk %}" class="btn btn-sm btn-info text-white" title="Ver">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a href="{% url 'pedidodetalle-update' item.pk %}" class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <a href="{% url 'pedidodetalle-delete' item.pk %}" class="btn btn-sm btn-danger" title="Eliminar">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">
+                                    No hay detalles de pedidos registrados.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
